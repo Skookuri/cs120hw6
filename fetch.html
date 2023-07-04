@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Unit 2 PS 4 API FETCH</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://skookuri.github.io/cs120hw6/stylesheet.css">
+<script>
+function getLocation() {
+
+	function generateArtwork() {
+		var artworkId = Math.floor(Math.random() * 100000);
+		var url = "https://api.artic.edu/api/v1/artworks/" + artworkId + "?fields=id,title,image_id";
+
+		fetch(url)
+			.then(response => response.json())
+			.then(data => {
+				if (data.data) {
+					document.getElementById("data").innerHTML = 
+						"<ul>" +
+						"<li>" + data.data.title + "</li>" +
+						"<li>" + "<img src='https://www.artic.edu/iiif/2/" + data.data.image_id + "/full/843,/0/default.jpg'>" + "</li>" +
+						"</ul>" +
+						"<p>The API I selected has data on postal codes and their addresses as well as their longitudes/latitudes</p>" +
+						"<p>I found the API on this website: https://apipheny.io/free-api/</p>" +
+						"<p>I used fetch, =>, and .then for the fetch API request in this website, while for the other website, I used AJAX, which uses GET and new XMLHttpRequest()</p>" +
+						"<p>This API would be helpful with randomized location generator games and postal code lookup websites/applications.</p>";
+					return; // Exit the recursive function
+				} else {
+					console.log("Artwork not found, generating a new ID...");
+					generateArtwork(); // Call the function again to generate a new ID
+				}
+			})
+			.catch(error => console.log(error));
+	}
+
+	// Start the artwork generation process
+	generateArtwork();
+}
+</script>
+</head>
+<body onload="getLocation()">
+	<h1>Location</h1>
+	<div id="data">Loading...</div>
+</body>
+</html>
