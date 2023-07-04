@@ -5,52 +5,59 @@
 <meta charset="utf-8"/>
 <script>
 function getLocation() {
-/* Step 1: Make instance of request object...
-...to make HTTP request after page is loaded*/
+	/* Step 1: Make instance of request object...
+	...to make HTTP request after page is loaded */
 	request = new XMLHttpRequest();
 	console.log("1 - request object created");
- 
-// Step 2: Set the URL for the AJAX request to be the JSON file
-	request.open("GET", "https://api.zippopotam.us/us/33162", true)
 
-	console.log("2 - opened request file");
- 
-// Step 3: set up event handler/callback
-	request.onreadystatechange = function() {
-		console.log("3 - readystatechange event fired.");
-		if (request.readyState == 4 && request.status == 200) {
-		// Step 5: wait for done + success
-			console.log("5 - response received");
-			result = request.responseText;
-			alert(result);
-			place = JSON.parse(result);		
-            document.getElementById("data").innerHTML = 
-            "<ul>" + 
-            "<li>" + "Postal Code: " + place["post code"] + "</li>" +
-            "<li>" + "Country: " + place.country + "</li>" + 
-            "<li>" + "Country Abbreviation: " + place["country abbreviation"] + "</li>" 
-            //"<li>" + "Place: " + place.places[0].state[0] + "</li>" 
-            //the syntax wasnt working
-            
-            
-		} else if (request.readyState == 4 && request.status != 200) {
-			document.getElementById("data").innerHTML = "Something is wrong!  Check the logs to see where this went off the rails";
-		} else if (request.readyState == 3) {
-			document.getElementById("data").innerHTML = "Too soon!  Try again";
+	// Step 2: Set up a recursive function to generate a new artwork ID if the artwork is not found
+	function generateArtwork() {
+		var artworkId = Math.floor(Math.random() * 100000);
+
+		// Step 3: Set the URL for the AJAX request to include the random artwork ID
+		var url = "https://api.artic.edu/api/v1/artworks/" + artworkId + "?fields=id,title,image_id";
+		request.open("GET", url, true);
+
+		console.log("2 - opened request file");
+
+		// Step 4: Set up event handler/callback
+		request.onreadystatechange = function() {
+			console.log("3 - readystatechange event fired.");
+			if (request.readyState == 4 && request.status == 200) {
+				// Step 5: Wait for done + success
+				console.log("5 - response received");
+				result = request.responseText;
+				artworks = JSON.parse(result);
+				document.getElementById("data").innerHTML =
+					"<ul>" +
+					"<li>" + artworks.data.title + "</li>" +
+					"<li>" + "<img src='" + "https://www.artic.edu/iiif/2/" + artworks.data.image_id + "/full/843,/0/default.jpg" + "'>" + "</li>" +
+					"</ul>";
+				return; // Exit the recursive function
+			} else if (request.readyState == 4 && request.status != 200) {
+				console.log("Artwork not found, generating a new ID...");
+				generateArtwork(); // Call the function again to generate a new ID
+			} else if (request.readyState == 3) {
+				document.getElementById("data").innerHTML = "Too soon!  Try again";
+			}
 		}
 
+		// Step 6: Fire off the HTTP request
+		request.send();
+		console.log("4 - Request sent");
 	}
-	// Step 4: fire off the HTTP request
-	request.send();
-	console.log("4 - Request sent");
+
+	// Start the artwork generation process
+	generateArtwork();
 }
 </script>
 </head>
 <style>
 	body {
-    	background-color: #009900;
-        color: rgba(255, 255, 255);
+    	background-color: #000000;
+        color: #fff;
         text-align: center;
+        
         font-size: 30px;
         padding: 150px;
     }
@@ -66,7 +73,7 @@ function getLocation() {
         transition: 0.4s;
         padding: 50px;
         opacity: 1;
-        background-color: rgb(0,128,0, 0.8);
+        background-color: rgb(0,0,0, 0.8);
         border-radius: 20px;
     	-webkit-text-stroke: 2px #ffffff94;
     	font-weight: 800;
@@ -78,7 +85,6 @@ function getLocation() {
     }
     
     h1 {
-    	color: rgb(0,128,0);
     	font-size: 50px;
     	transition: 0.4s;
     	border-radius: 20px;
@@ -90,9 +96,14 @@ function getLocation() {
     	animation-iteration-count: infinite;
     	transition-duration: 1s;
     }
+    
+    img {
+    	width: 70%;
+        height: 70%;
+    }
 </style>
 <body onload="getLocation()">
-	<h1>Location</h1>
+	<h1>Artwork</h1>
 	<div id="data">Loading...</div>
 </body>
 </html>
