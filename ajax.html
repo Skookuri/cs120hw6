@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Unit 2 PS 4 API AJAX</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://skookuri.github.io/cs120hw6/stylesheet.css">
+<script>
+function getLocation() {
+	/* Step 1: Make instance of request object...
+	...to make HTTP request after page is loaded */
+	request = new XMLHttpRequest();
+	console.log("1 - request object created");
+
+	// Step 2: Set up a recursive function to generate a new artwork ID if the artwork is not found
+	function generateArtwork() {
+		var artworkId = Math.floor(Math.random() * 100000);
+
+		// Step 3: Set the URL for the AJAX request to include the random artwork ID
+		var url = "https://api.artic.edu/api/v1/artworks/" + artworkId + "?fields=id,title,image_id";
+		request.open("GET", url, true);
+
+		console.log("2 - opened request file");
+
+		// Step 4: Set up event handler/callback
+		request.onreadystatechange = function() {
+			console.log("3 - readystatechange event fired.");
+			if (request.readyState == 4 && request.status == 200) {
+				// Step 5: Wait for done + success
+				console.log("5 - response received");
+				result = request.responseText;
+				artworks = JSON.parse(result);
+				document.getElementById("data").innerHTML =
+					"<ul>" +
+					"<li>" + artworks.data.title + "</li>" +
+					"<li>" + "<img src='" + "https://www.artic.edu/iiif/2/" + artworks.data.image_id + "/full/843,/0/default.jpg" + "'>" + "</li>" +
+					"</ul>";
+				return; // Exit the recursive function
+			} else if (request.readyState == 4 && request.status != 200) {
+				console.log("Artwork not found, generating a new ID...");
+				generateArtwork(); // Call the function again to generate a new ID
+			} else if (request.readyState == 3) {
+				document.getElementById("data").innerHTML = "Too soon!  Try again";
+			}
+		}
+
+		// Step 6: Fire off the HTTP request
+		request.send();
+		console.log("4 - Request sent");
+	}
+
+	// Start the artwork generation process
+	generateArtwork();
+}
+</script>
+</head>
+<body onload="getLocation()">
+	<h1>Artwork</h1>
+	<div id="data">Loading...</div>
+</body>
+</html>
