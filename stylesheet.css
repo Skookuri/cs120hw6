@@ -56,9 +56,9 @@
     
     img {
     	width: 50vw;
-        height: 50vw;
-        max-width: 2000px;
-        max-height: 2000px;
+        height: 100%;
+        max-width: 1000px;
+        max-height: 1000px;
         cursor: pointer;
         opacity: 0.8;
     }
@@ -67,4 +67,8 @@
     	opacity: 1;
         transition: 0.4s;
         box-shadow: 0 0 60px #fff, 0 0 60px #fff;
+    }
+    
+    p {
+    	font-size: 25px;
     }
