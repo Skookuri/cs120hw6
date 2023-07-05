@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="https://skookuri.github.io/cs120hw6/stylesheet.css">
 <script>
-function getLocation() {
+function getArtwork() {
 	/* Step 1: Make instance of request object...
 	...to make HTTP request after page is loaded */
 	request = new XMLHttpRequest();
@@ -54,8 +54,8 @@ function getLocation() {
 }
 </script>
 </head>
-<body onload="getLocation()">
-	<button onclick="getLocation()">Regenerate!</button>
+<body onload="getArtwork()">
+	<button onclick="getArtwork()">Regenerate!</button>
     <h1>Artwork</h1>
 	<div id="data">Loading...</div>
 </body>
