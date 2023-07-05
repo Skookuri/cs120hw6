@@ -14,16 +14,16 @@ function getArtwork() {
 
 		fetch(url)
 			.then(response => response.json())
-			.then(data => {
-				if (data.data) {
+			.then(artworks => {
+				if (artworks.data) {
 					document.getElementById("data").innerHTML = 
 						"<ul>" +
-						"<li>" + data.data.title + "</li>" +
-						"<li>" + "<img src='https://www.artic.edu/iiif/2/" + data.data.image_id + "/full/843,/0/default.jpg'>" + "</li>" +
+						"<li>" + artworks.data.title + "</li>" +
+						"<li>" + "<img src='https://www.artic.edu/iiif/2/" + artworks.data.image_id + "/full/843,/0/default.jpg'>" + "</li>" +
 						"</ul>" +
 						"<p>The API I selected has data on several art pieces and their titles</p>" +
 						"<p>I found the API on this website: https://github.com/public-apis/public-apis</p>" +
-						"<p>I used fetch, =>, and .then for the fetch API request in this website, while for the other website, I used AJAX, which uses GET and new XMLHttpRequest()</p>" +
+						"<p>I used fetch, =>, and .then for the fetch API request in this website, while for the other website, I used AJAX, which uses GET and new XMLHttpRequest(). For both websites, I needed to generate a random number which would then be attached to the end of the API link such that a random artwork would be generated, and in the case the randomly generated number did not align with a specific artpiece, the function would be rerun</p>" +
 						"<p>This API would be helpful with 1. Randomized Museum Artwork Displays and 2. Randomized Reference Images for Artists.</p>";
 					return; // Exit the recursive function
 				} else {
