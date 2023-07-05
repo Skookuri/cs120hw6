@@ -21,10 +21,10 @@ function getArtwork() {
 						"<li>" + data.data.title + "</li>" +
 						"<li>" + "<img src='https://www.artic.edu/iiif/2/" + data.data.image_id + "/full/843,/0/default.jpg'>" + "</li>" +
 						"</ul>" +
-						"<p>The API I selected has data on postal codes and their addresses as well as their longitudes/latitudes</p>" +
-						"<p>I found the API on this website: https://apipheny.io/free-api/</p>" +
+						"<p>The API I selected has data on several art pieces and their titles</p>" +
+						"<p>I found the API on this website: https://github.com/public-apis/public-apis</p>" +
 						"<p>I used fetch, =>, and .then for the fetch API request in this website, while for the other website, I used AJAX, which uses GET and new XMLHttpRequest()</p>" +
-						"<p>This API would be helpful with randomized location generator games and postal code lookup websites/applications.</p>";
+						"<p>This API would be helpful with 1. Randomized Museum Artwork Displays and 2. Randomized Reference Images for Artists.</p>";
 					return; // Exit the recursive function
 				} else {
 					console.log("Artwork not found, generating a new ID...");
